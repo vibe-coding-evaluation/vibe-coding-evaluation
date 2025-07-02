@@ -75,10 +75,6 @@ export interface Flag {
   modification_date: string
 }
 
-export interface BugFormData extends Partial<BugData> {
-  // Form-specific fields
-}
-
 export interface ApiResponse<T> {
   bugs: T[]
   faults?: ApiError[]
@@ -98,14 +94,4 @@ export interface TabConfig {
   id: string
   label: string
   active?: boolean
-}
-
-export interface FieldConfig {
-  key: keyof BugData
-  label: string
-  type: "text" | "textarea" | "select" | "multiselect" | "date" | "number"
-  options?: { value: string; label: string }[]
-  monospace?: boolean
-  required?: boolean
-  readonly?: boolean
 }
