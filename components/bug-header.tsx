@@ -1,0 +1,73 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import type { BugData } from "@/types/bug"
+
+interface BugHeaderProps {
+  bug: BugData | null
+  onSave: () => void
+  saving: boolean
+  error: string | null
+}
+
+export function BugHeader({ bug, onSave, saving, error }: BugHeaderProps) {
+  return (
+    <div className="bg-white border-b-2 border-gray-300 px-4 py-3 shadow-sm">
+      {/* Navigation */}
+      <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+        <div className="space-x-2">
+          <span>Bug List: (4 of 500)</span>
+          <a href="#" className="text-blue-600 underline hover:text-blue-800">
+            First
+          </a>
+          <a href="#" className="text-blue-600 underline hover:text-blue-800">
+            Last
+          </a>
+          <a href="#" className="text-blue-600 underline hover:text-blue-800">
+            Prev
+          </a>
+          <a href="#" className="text-blue-600 underline hover:text-blue-800">
+            Next
+          </a>
+          <a href="#" className="text-blue-600 underline hover:text-blue-800 ml-4">
+            Show last search results
+          </a>
+        </div>
+      </div>
+
+      {/* Bug Title and Actions */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-lg font-normal">
+          <a href="#" className="text-blue-600 underline hover:text-blue-800">
+            Bug {bug?.id || "---"}
+          </a>
+          {" - "}
+          {bug?.summary || "Loading..."}{" "}
+          <span className="text-gray-600">
+            (
+            <a href="#" className="text-blue-600 underline hover:text-blue-800">
+              edit
+            </a>
+            )
+          </span>
+        </h1>
+
+        <div className="flex items-center gap-3">
+          {error && <span className="text-red-600 text-sm">{error}</span>}
+          <Button
+            onClick={onSave}
+            disabled={saving}
+            className="bg-gray-100 border-2 border-gray-400 text-black hover:bg-gray-200 shadow-sm"
+            variant="outline"
+          >
+            {saving ? "Saving..." : "Save Changes"}
+          </Button>
+          <label className="flex items-center text-xs text-gray-600">
+            <input type="checkbox" className="mr-2" />
+            This is a minor update (do not send email)
+          </label>
+        </div>
+      </div>
+    </div>
+  )
+}
