@@ -7,6 +7,7 @@ import { BugHeader } from "@/components/bug-header"
 import { BugTabs } from "@/components/bug-tabs"
 import { BugFormLeft } from "@/components/bug-form-left"
 import { BugFormRight } from "@/components/bug-form-right"
+import { DeliveryMatrix } from "@/components/delivery-matrix"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -23,6 +24,7 @@ export function BugDetailPage({ bugId = 338662 }: BugDetailPageProps) {
     { id: "development", label: "Development", active: true },
     { id: "development-read", label: "Development [read mode]" },
     { id: "qa-delivery", label: "QA Delivery and Dev Support" },
+    { id: "delivery-matrix", label: "Delivery Matrix" },
   ]
 
   const handleFieldChange = (field: keyof BugData, value: any) => {
@@ -94,17 +96,31 @@ export function BugDetailPage({ bugId = 338662 }: BugDetailPageProps) {
   // Merge bug data with form changes for display
   const displayBug = { ...bug, ...formData }
 
+  const renderTabContent = () => {
+    if (activeTab === "delivery-matrix") {
+      return (
+        <div className="p-6">
+          <DeliveryMatrix />
+        </div>
+      )
+    }
+
+    return (
+      <div className="bg-gray-100 border-2 border-gray-300 p-6 shadow-inner">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <BugFormLeft bug={displayBug} onChange={handleFieldChange} />
+          <BugFormRight bug={displayBug} onChange={handleFieldChange} />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <BugHeader bug={bug} onSave={handleSave} saving={saving} error={error} />
 
       <BugTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab}>
-        <div className="bg-gray-100 border-2 border-gray-300 p-6 shadow-inner">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <BugFormLeft bug={displayBug} onChange={handleFieldChange} />
-            <BugFormRight bug={displayBug} onChange={handleFieldChange} />
-          </div>
-        </div>
+        {renderTabContent()}
       </BugTabs>
     </div>
   )
