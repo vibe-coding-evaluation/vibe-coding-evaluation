@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import type { BugData } from "@/types/bug"
-import { bugzillaApi, BugzillaApiError } from "@/services/bugzilla-api"
+import { getBugData } from "@/data/mock-data"
 
 interface UseBugDataReturn {
   bug: BugData | null
@@ -12,6 +12,9 @@ interface UseBugDataReturn {
   updateBug: (updates: Partial<BugData>) => Promise<void>
   saving: boolean
 }
+
+// In-memory storage for bug updates
+const bugUpdates = new Map<number, Partial<BugData>>()
 
 export function useBugData(bugId: number): UseBugDataReturn {
   const [bug, setBug] = useState<BugData | null>(null)
@@ -23,11 +26,23 @@ export function useBugData(bugId: number): UseBugDataReturn {
     try {
       setLoading(true)
       setError(null)
-      const bugData = await bugzillaApi.getBug(bugId)
-      setBug(bugData)
+
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 300))
+
+      const bugData = getBugData(bugId)
+      if (!bugData) {
+        setError(`Bug ${bugId} not found`)
+        return
+      }
+
+      // Apply any stored updates
+      const updates = bugUpdates.get(bugId)
+      const finalBugData = updates ? { ...bugData, ...updates } : bugData
+
+      setBug(finalBugData)
     } catch (err) {
-      const errorMessage = err instanceof BugzillaApiError ? err.message : "Failed to fetch bug data"
-      setError(errorMessage)
+      setError("Failed to fetch bug data")
     } finally {
       setLoading(false)
     }
@@ -39,11 +54,21 @@ export function useBugData(bugId: number): UseBugDataReturn {
     try {
       setSaving(true)
       setError(null)
-      await bugzillaApi.updateBug(bug.id, updates)
-      setBug((prev) => (prev ? { ...prev, ...updates } : null))
+
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      // Store updates in memory
+      const existingUpdates = bugUpdates.get(bug.id) || {}
+      const newUpdates = { ...existingUpdates, ...updates }
+      bugUpdates.set(bug.id, newUpdates)
+
+      // Update local state
+      setBug((prev) => (prev ? { ...prev, ...updates, last_change_time: new Date().toISOString() } : null))
+
+      console.log(`Bug ${bug.id} updated:`, updates)
     } catch (err) {
-      const errorMessage = err instanceof BugzillaApiError ? err.message : "Failed to update bug"
-      setError(errorMessage)
+      setError("Failed to update bug")
       throw err
     } finally {
       setSaving(false)

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react"
+import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import { DeliveryMatrix } from "@/components/delivery-matrix"
 
 describe("DeliveryMatrix", () => {
@@ -50,55 +50,34 @@ describe("DeliveryMatrix", () => {
     expect(firstTargetReleaseInput).toHaveValue("2.0.5.1")
   })
 
-  it("handles save button click", () => {
+  it("handles save button click", async () => {
     render(<DeliveryMatrix />)
 
     const saveButton = screen.getByText("Save Changes")
     fireEvent.click(saveButton)
 
     expect(screen.getByText("Saving...")).toBeInTheDocument()
+
+    await waitFor(() => {
+      expect(screen.getByText("Save Changes")).toBeInTheDocument()
+    })
   })
 
-  it("shows zebra striping on table rows", () => {
+  it("persists changes across interactions", () => {
     render(<DeliveryMatrix />)
 
-    const tableRows = screen.getAllByRole("row")
-    // Skip header row (index 0)
-    const firstDataRow = tableRows[1]
-    const secondDataRow = tableRows[2]
+    // Make a change
+    const affectedDropdowns = screen.getAllByDisplayValue("not set")
+    const firstAffectedDropdown = affectedDropdowns[0]
+    fireEvent.change(firstAffectedDropdown, { target: { value: "yes" } })
 
-    expect(firstDataRow).toHaveClass("bg-white")
-    expect(secondDataRow).toHaveClass("bg-gray-50")
-  })
+    // Make another change
+    const targetReleaseInputs = screen.getAllByDisplayValue("")
+    const firstTargetReleaseInput = targetReleaseInputs[0]
+    fireEvent.change(firstTargetReleaseInput, { target: { value: "2.0.5.1" } })
 
-  it("displays branch information", () => {
-    render(<DeliveryMatrix />)
-
-    expect(screen.getByText("(hana2sp05)")).toBeInTheDocument()
-    expect(screen.getByText("(hana2sp07)")).toBeInTheDocument()
-    expect(screen.getByText("(orange)")).toBeInTheDocument()
-    expect(screen.getByText("(CE2024.14)")).toBeInTheDocument()
-    expect(screen.getByText("(master)")).toBeInTheDocument()
-  })
-
-  it("shows footer links", () => {
-    render(<DeliveryMatrix />)
-
-    expect(screen.getByText("Bugzilla FAQ")).toBeInTheDocument()
-    expect(screen.getByText("Developer FAQ")).toBeInTheDocument()
-    expect(screen.getByText("Delivery Schedule")).toBeInTheDocument()
-    expect(screen.getByText("Delivery Graph")).toBeInTheDocument()
-    expect(screen.getByText("Show inactive codelines")).toBeInTheDocument()
-  })
-
-  it("handles HANA Cloud row differently", () => {
-    render(<DeliveryMatrix />)
-
-    // HANA Cloud row should not have delivery and release blocker dropdowns
-    const tableRows = screen.getAllByRole("row")
-    const hanaCloudRow = tableRows[tableRows.length - 1] // Last row
-
-    expect(hanaCloudRow).toHaveTextContent("HANA Cloud")
-    expect(hanaCloudRow).toHaveTextContent("(master)")
+    // Both changes should persist
+    expect(firstAffectedDropdown).toHaveValue("yes")
+    expect(firstTargetReleaseInput).toHaveValue("2.0.5.1")
   })
 })

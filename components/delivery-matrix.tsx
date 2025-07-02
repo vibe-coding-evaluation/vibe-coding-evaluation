@@ -2,137 +2,48 @@
 
 import { useState } from "react"
 import type { DeliveryMatrixRow } from "@/types/delivery"
+import { initialDeliveryRows, affectedOptions, deliveryOptions, releaseBlockerOptions } from "@/data/delivery-data"
 import { Button } from "@/components/ui/button"
 
-const initialRows: DeliveryMatrixRow[] = [
-  {
-    id: "sp05",
-    codeLine: "2.0 SP05",
-    branch: "(hana2sp05)",
-    affected: "not set",
-    delivery: "not set",
-    releaseBlocker: "not set",
-    targetRelease: "",
-    fixedInCodeLine: "",
-    shippedRelease: "",
-    deliveryRemark: "",
-  },
-  {
-    id: "sp07",
-    codeLine: "2.0 SP07",
-    branch: "(hana2sp07)",
-    affected: "not set",
-    delivery: "not set",
-    releaseBlocker: "not set",
-    targetRelease: "",
-    fixedInCodeLine: "",
-    shippedRelease: "",
-    deliveryRemark: "",
-  },
-  {
-    id: "sp08",
-    codeLine: "2.0 SP08",
-    branch: "(hana2sp08)",
-    affected: "not set",
-    delivery: "not set",
-    releaseBlocker: "not set",
-    targetRelease: "",
-    fixedInCodeLine: "",
-    shippedRelease: "",
-    deliveryRemark: "",
-  },
-  {
-    id: "sp09",
-    codeLine: "2.0 SP09",
-    branch: "(orange)",
-    affected: "not set",
-    delivery: "not set",
-    releaseBlocker: "not set",
-    targetRelease: "",
-    fixedInCodeLine: "",
-    shippedRelease: "",
-    deliveryRemark: "",
-  },
-  {
-    id: "q2qrc",
-    codeLine: "2024 Q2 QRC",
-    branch: "(CE2024.14)",
-    affected: "not set",
-    delivery: "not set",
-    releaseBlocker: "not set",
-    targetRelease: "",
-    fixedInCodeLine: "",
-    shippedRelease: "",
-    deliveryRemark: "",
-  },
-  {
-    id: "q3qrc",
-    codeLine: "2024 Q3 QRC",
-    branch: "(CE2024.28)",
-    affected: "not set",
-    delivery: "not set",
-    releaseBlocker: "not set",
-    targetRelease: "",
-    fixedInCodeLine: "",
-    shippedRelease: "",
-    deliveryRemark: "",
-  },
-  {
-    id: "q4qrc",
-    codeLine: "2024 Q4 QRC",
-    branch: "(CE2024.40)",
-    affected: "not set",
-    delivery: "not set",
-    releaseBlocker: "not set",
-    targetRelease: "",
-    fixedInCodeLine: "",
-    shippedRelease: "",
-    deliveryRemark: "",
-  },
-  {
-    id: "q1qrc2025",
-    codeLine: "2025 Q1 QRC",
-    branch: "(CE2025.2)",
-    affected: "not set",
-    delivery: "not set",
-    releaseBlocker: "not set",
-    targetRelease: "",
-    fixedInCodeLine: "",
-    shippedRelease: "",
-    deliveryRemark: "",
-  },
-  {
-    id: "hanacloud",
-    codeLine: "HANA Cloud",
-    branch: "(master)",
-    affected: "not set",
-    delivery: "",
-    releaseBlocker: "",
-    targetRelease: "",
-    fixedInCodeLine: "",
-    shippedRelease: "",
-    deliveryRemark: "",
-  },
-]
-
-const affectedOptions = ["not set", "---", "yes", "no"]
-const deliveryOptions = ["not set", "---", "yes", "no", "planned"]
-const releaseBlockerOptions = ["not set", "---", "yes", "no"]
+// In-memory storage for delivery matrix updates
+const deliveryUpdates = new Map<string, Partial<DeliveryMatrixRow>>()
 
 export function DeliveryMatrix() {
-  const [rows, setRows] = useState<DeliveryMatrixRow[]>(initialRows)
+  const [rows, setRows] = useState<DeliveryMatrixRow[]>(() => {
+    // Apply any stored updates on initialization
+    return initialDeliveryRows.map((row) => {
+      const updates = deliveryUpdates.get(row.id)
+      return updates ? { ...row, ...updates } : row
+    })
+  })
   const [saving, setSaving] = useState(false)
 
   const updateRow = (id: string, field: keyof DeliveryMatrixRow, value: string) => {
-    setRows((prevRows) => prevRows.map((row) => (row.id === id ? { ...row, [field]: value } : row)))
+    setRows((prevRows) =>
+      prevRows.map((row) => {
+        if (row.id === id) {
+          const updatedRow = { ...row, [field]: value }
+
+          // Store updates in memory
+          const existingUpdates = deliveryUpdates.get(id) || {}
+          deliveryUpdates.set(id, { ...existingUpdates, [field]: value })
+
+          return updatedRow
+        }
+        return row
+      }),
+    )
   }
 
   const handleSave = async () => {
     setSaving(true)
+
     // Simulate save operation
     await new Promise((resolve) => setTimeout(resolve, 1000))
+
     setSaving(false)
     console.log("Delivery matrix saved:", rows)
+    console.log("Stored updates:", Object.fromEntries(deliveryUpdates))
   }
 
   return (

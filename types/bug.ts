@@ -75,21 +75,6 @@ export interface Flag {
   modification_date: string
 }
 
-export interface ApiResponse<T> {
-  bugs: T[]
-  faults?: ApiError[]
-}
-
-export interface ApiError {
-  faultCode: number
-  faultString: string
-}
-
-export interface BugUpdateRequest {
-  ids: number[]
-  [key: string]: any
-}
-
 export interface TabConfig {
   id: string
   label: string
