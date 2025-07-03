@@ -97,7 +97,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
   }
 
   return (
-    <div className="bg-white border-t-2 border-gray-300 p-4 space-y-6">
+    <div className="space-y-6">
       {/* Top Section: Comment Submission */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">

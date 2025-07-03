@@ -128,8 +128,21 @@ export function BugDetailPage({ bugId = 338662 }: BugDetailPageProps) {
         {renderTabContent()}
       </BugTabs>
 
-      {/* Comments Section */}
-      <BugComments bug={displayBug} onStatusChange={handleStatusChange} />
+      {/* Comments Section - 2 Column Layout */}
+      <div className="bg-white border-t-2 border-gray-300">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
+          {/* Left Column: Comments */}
+          <div>
+            <BugComments bug={displayBug} onStatusChange={handleStatusChange} />
+          </div>
+
+          {/* Right Column: Additional Info or Empty */}
+          <div className="space-y-4">
+            {/* You can add additional components here if needed */}
+            <div className="text-gray-500 text-sm">{/* Placeholder for future right column content */}</div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
