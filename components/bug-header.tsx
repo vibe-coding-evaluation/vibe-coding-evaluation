@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import type { BugData } from "@/types/bug"
 
 interface BugHeaderProps {
@@ -12,7 +13,7 @@ interface BugHeaderProps {
 
 export function BugHeader({ bug, onSave, saving, error }: BugHeaderProps) {
   return (
-    <div className="bg-white border-b-2 border-gray-300 px-4 py-3 shadow-sm">
+    <div className="bg-white border-b-2 border-gray-300 px-4 py-3 shadow-sm sticky top-0 z-10">
       {/* Navigation */}
       <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
         <div className="space-x-2">
@@ -54,18 +55,22 @@ export function BugHeader({ bug, onSave, saving, error }: BugHeaderProps) {
 
         <div className="flex items-center gap-3">
           {error && <span className="text-red-600 text-sm">{error}</span>}
-          <Button
-            onClick={onSave}
-            disabled={saving}
-            className="bg-gray-100 border-2 border-gray-400 text-black hover:bg-gray-200 shadow-sm"
-            variant="outline"
-          >
-            {saving ? "Saving..." : "Save Changes"}
-          </Button>
-          <label className="flex items-center text-xs text-gray-600">
-            <input type="checkbox" className="mr-2" />
-            This is a minor update (do not send email)
-          </label>
+          <div className="flex flex-col items-end gap-2">
+            <Button
+              onClick={onSave}
+              disabled={saving}
+              className="bg-gray-100 border-2 border-gray-400 text-black hover:bg-gray-200 shadow-sm"
+              variant="outline"
+            >
+              {saving ? "Saving..." : "Save Changes"}
+            </Button>
+            <div className="flex items-center space-x-2">
+              <Checkbox id="minor-update" />
+              <label htmlFor="minor-update" className="text-xs text-gray-600 cursor-pointer">
+                This is a minor update (do not send email)
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>

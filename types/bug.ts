@@ -31,7 +31,7 @@ export interface BugData {
   flags?: Flag[]
   custom_fields?: Record<string, any>
 
-  // Custom fields for our implementation
+  // Enhanced custom fields matching specifications
   symptom?: string
   steps_to_reproduce?: string
   workaround?: string
@@ -41,7 +41,10 @@ export interface BugData {
   testcase_exists?: boolean
   testcases?: string
   gerrit_links?: string[]
+  regression_commit_links?: string[]
+  reason_why_not_provided?: string
   jira_links?: string[]
+  root_cause_analysis?: string
   cvss_score?: number
   internal_messages?: string
   customer_messages?: string
@@ -79,4 +82,15 @@ export interface TabConfig {
   id: string
   label: string
   active?: boolean
+}
+
+export interface FieldConfig {
+  key: keyof BugData
+  label: string
+  type: "text" | "textarea" | "select" | "number" | "tags"
+  required?: boolean
+  monospace?: boolean
+  options?: { value: string; label: string }[]
+  placeholder?: string
+  rows?: number
 }

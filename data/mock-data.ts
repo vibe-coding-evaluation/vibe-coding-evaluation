@@ -1,6 +1,6 @@
 import type { BugData } from "@/types/bug"
 
-// Dummy bug data - no API calls needed
+// Enhanced dummy bug data with all specified fields
 export const mockBugData: BugData = {
   id: 338662,
   summary: "Database crash when executing complex query with multiple joins",
@@ -9,7 +9,7 @@ export const mockBugData: BugData = {
   product: "NewDB",
   component: "Crash Consulting",
   version: "2.5.1",
-  priority: "P1",
+  priority: "High",
   severity: "major",
   platform: "All",
   op_sys: "Linux",
@@ -37,12 +37,12 @@ export const mockBugData: BugData = {
   creation_time: "2025-05-20T09:29:04Z",
   last_change_time: "2025-07-02T03:44:00Z",
   classification: "Unclassified",
-  alias: [],
-  url: "",
-  whiteboard: "",
+  alias: ["CRASH-DB-001"],
+  url: "https://docs.example.com/crash-analysis",
+  whiteboard: "Critical database issue",
   keywords: ["D_CRASH", "I_CLOUD_ISSUE", "I_CLOUD_OUTAGE", "I_CUSTOMER_ISSUE"],
-  depends_on: [],
-  blocks: [],
+  depends_on: [338661],
+  blocks: [338663],
   cc: ["user1@example.com", "user2@example.com"],
   cc_detail: [
     {
@@ -50,6 +50,12 @@ export const mockBugData: BugData = {
       email: "user1@example.com",
       name: "user1",
       real_name: "User One",
+    },
+    {
+      id: 3002,
+      email: "user2@example.com",
+      name: "user2",
+      real_name: "User Two",
     },
   ],
   see_also: [],
@@ -70,29 +76,38 @@ export const mockBugData: BugData = {
     cf_internal_priority: "Critical",
     cf_escalation_level: "L2",
   },
+
+  // Enhanced fields
   symptom: "crash_callstack_string",
-  steps_to_reproduce: "1. Execute complex query with multiple joins\n2. Wait for processing\n3. Database crashes",
-  workaround: "Use simpler queries or break down complex joins into multiple steps",
-  root_cause: "Memory allocation issue in query optimizer when handling complex join operations",
-  solution: "Implement better memory management in query optimizer module",
+  steps_to_reproduce:
+    "1. Execute complex query with multiple joins\n2. Wait for processing\n3. Database crashes with segmentation fault",
+  workaround:
+    "Use simpler queries or break down complex joins into multiple steps. Alternatively, increase memory allocation.",
+  root_cause: "Memory allocation issue in query optimizer when handling complex join operations with large datasets",
+  solution: "Implement better memory management in query optimizer module and add bounds checking",
   error_category: "crash",
   testcase_exists: true,
   testcases: "testComplexJoins.py -t 42",
   gerrit_links: ["https://gerrit.example.com/c/12345", "https://gerrit.example.com/c/12346"],
+  regression_commit_links: ["https://gerrit.example.com/c/11999"],
+  reason_why_not_provided: "",
   jira_links: ["https://jira.example.com/browse/DB-1234"],
+  root_cause_analysis: "Memory Management",
   cvss_score: 7.5,
-  internal_messages: "Critical issue affecting multiple customers. High priority fix required.",
-  customer_messages: "We are aware of this issue and working on a fix. Expected resolution within 48 hours.",
+  internal_messages:
+    "Critical issue affecting multiple customers. High priority fix required. Engineering team assigned.",
+  customer_messages:
+    "We are aware of this issue and working on a fix. Expected resolution within 48 hours. Workaround available.",
   affected_customers: ["Customer A", "Customer B", "Customer C"],
   internal_stakeholders: ["HANA Cloud", "Database Team"],
   reported_release: "Cloud-Edition",
   reported_cloud_edition: "Standard",
   reported_branch: "main",
-  reported_hana_instances: ["instance_guid_123", "instance_guid_456"],
+  reported_hana_instances: ["abcdefab-0123-4567-89ab-cdef12345678", "fedcba98-7654-3210-ba98-876543210fed"],
   backlog_duration: 42,
   mpt_due_date: "2025-08-01",
-  problem_identifier: ["problem_id_001"],
-  additional_tags: ["urgent", "customer-facing"],
+  problem_identifier: ["problem_id_001", "crash_db_001"],
+  additional_tags: ["urgent", "customer-facing", "memory-leak"],
 }
 
 // Additional sample bugs
@@ -105,7 +120,7 @@ export const additionalBugs: Record<number, BugData> = {
     product: "FoodReplicator",
     component: "SaltSprinkler",
     version: "1.0",
-    priority: "P1",
+    priority: "High",
     severity: "critical",
     platform: "All",
     op_sys: "All",
@@ -173,7 +188,10 @@ export const additionalBugs: Record<number, BugData> = {
     testcase_exists: true,
     testcases: "testSaltReplication.py -t 15",
     gerrit_links: ["https://gerrit.example.com/c/food-replicator/+/12345"],
+    regression_commit_links: [],
+    reason_why_not_provided: "",
     jira_links: ["https://jira.example.com/browse/FOOD-456"],
+    root_cause_analysis: "Memory Management",
     cvss_score: 8.5,
     internal_messages: "Critical bug affecting salt replication functionality. Customer reports high priority.",
     customer_messages: "We are investigating the salt replication issue. Workaround available using pepper.",

@@ -33,6 +33,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
       options: [
         { value: "NewDB", label: "NewDB" },
         { value: "HANA Cloud", label: "HANA Cloud" },
+        { value: "FoodReplicator", label: "FoodReplicator" },
       ],
     },
     {
@@ -42,6 +43,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
       options: [
         { value: "Crash Consulting", label: "Crash Consulting" },
         { value: "Database", label: "Database" },
+        { value: "SaltSprinkler", label: "SaltSprinkler" },
       ],
     },
     {
@@ -49,9 +51,9 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
       label: "Importance",
       type: "select",
       options: [
-        { value: "P1", label: "High" },
-        { value: "P2", label: "Medium" },
-        { value: "P3", label: "Low" },
+        { value: "High", label: "High" },
+        { value: "Medium", label: "Medium" },
+        { value: "Low", label: "Low" },
       ],
     },
     {
@@ -62,6 +64,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
         { value: "All", label: "All" },
         { value: "Linux", label: "Linux" },
         { value: "Windows", label: "Windows" },
+        { value: "macOS", label: "macOS" },
       ],
     },
   ]
@@ -72,7 +75,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
         <FormField key={field.key} label={field.label}>
           {field.type === "select" ? (
             <VintageSelect
-              value={String(bug[field.key] || "---")}
+              value={String(bug[field.key] || "N/A")}
               onValueChange={(value) => onChange(field.key, value)}
               className="w-48"
             >
@@ -92,25 +95,45 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
         </FormField>
       ))}
 
-      {/* Custom fields */}
+      {/* Component with external link */}
+      <FormField label="Component">
+        <div className="flex items-center gap-2">
+          <VintageSelect
+            value={bug.component || "N/A"}
+            onValueChange={(value) => onChange("component", value)}
+            className="w-48"
+          >
+            <SelectItem value="Crash Consulting">Crash Consulting</SelectItem>
+            <SelectItem value="Database">Database</SelectItem>
+            <SelectItem value="SaltSprinkler">SaltSprinkler</SelectItem>
+          </VintageSelect>
+          <a href="#" className="text-blue-600 underline hover:text-blue-800 text-sm">
+            show other bugs
+          </a>
+        </div>
+      </FormField>
+
+      {/* Symptom */}
       <FormField label="Symptom">
-        <VintageTextarea
+        <VintageInput
           value={bug.symptom || ""}
           onChange={(e) => onChange("symptom", e.target.value)}
-          rows={3}
           monospace
+          className="w-full"
         />
       </FormField>
 
+      {/* Steps to reproduce */}
       <FormField label="Steps to reproduce">
         <VintageTextarea
           value={bug.steps_to_reproduce || ""}
           onChange={(e) => onChange("steps_to_reproduce", e.target.value)}
-          rows={3}
+          rows={4}
           monospace
         />
       </FormField>
 
+      {/* Workaround */}
       <FormField label="Workaround">
         <VintageTextarea
           value={bug.workaround || ""}
@@ -120,6 +143,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
         />
       </FormField>
 
+      {/* Root cause */}
       <FormField label="Root cause">
         <VintageTextarea
           value={bug.root_cause || ""}
@@ -129,6 +153,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
         />
       </FormField>
 
+      {/* Solution */}
       <FormField label="Solution">
         <VintageTextarea
           value={bug.solution || ""}
@@ -138,10 +163,11 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
         />
       </FormField>
 
+      {/* Error Category */}
       <FormField label="Error Category">
         <div className="flex items-center gap-2">
           <VintageSelect
-            value={bug.error_category || "---"}
+            value={bug.error_category || "N/A"}
             onValueChange={(value) => onChange("error_category", value)}
             className="w-48"
           >
@@ -149,6 +175,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
             <SelectItem value="crash">Crash</SelectItem>
             <SelectItem value="performance">Performance</SelectItem>
             <SelectItem value="data-corruption">Data Corruption</SelectItem>
+            <SelectItem value="memory-leak">Memory Leak</SelectItem>
           </VintageSelect>
           <a href="#" className="text-blue-600 underline hover:text-blue-800 text-sm">
             Crash and error categories
@@ -156,6 +183,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
         </div>
       </FormField>
 
+      {/* Dependencies */}
       <div className="space-y-2">
         <FormField label="Depends on">
           <VintageInput
@@ -169,6 +197,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
                   .filter((n) => !isNaN(n)),
               )
             }
+            className="w-full"
           />
         </FormField>
         <FormField label="Blocks">
@@ -183,6 +212,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
                   .filter((n) => !isNaN(n)),
               )
             }
+            className="w-full"
           />
         </FormField>
         <div className="ml-36 text-sm">
@@ -197,6 +227,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
         </div>
       </div>
 
+      {/* Testcase info */}
       <div className="space-y-2">
         <FormField label="Testcase exists">
           <VintageSelect
@@ -215,52 +246,95 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
             onChange={(e) => onChange("testcases", e.target.value)}
             placeholder="e.g. testAlterTable.py -t 42"
             monospace
+            className="w-full"
           />
         </FormField>
       </div>
 
-      <div className="space-y-2">
-        <FormField label="Gerrit link(s) for fix">
-          <div className="flex gap-2">
-            <VintageInput
-              value={bug.gerrit_links?.join(", ") || ""}
-              onChange={(e) =>
-                onChange(
-                  "gerrit_links",
-                  e.target.value
-                    .split(",")
-                    .map((s) => s.trim())
-                    .filter((s) => s),
-                )
-              }
-              className="flex-1"
-            />
-            <Button variant="outline" size="sm" className="bg-gray-100 border-2 border-gray-400">
-              Edit Gerrit Links
-            </Button>
-          </div>
-        </FormField>
-        <FormField label="Jira Link(s)">
-          <div className="flex gap-2">
-            <VintageInput
-              value={bug.jira_links?.join(", ") || ""}
-              onChange={(e) =>
-                onChange(
-                  "jira_links",
-                  e.target.value
-                    .split(",")
-                    .map((s) => s.trim())
-                    .filter((s) => s),
-                )
-              }
-              className="flex-1"
-            />
-            <Button variant="outline" size="sm" className="bg-gray-100 border-2 border-gray-400">
-              Edit Jira Links
-            </Button>
-          </div>
-        </FormField>
-      </div>
+      {/* Gerrit links */}
+      <FormField label="Gerrit link(s) for fix">
+        <div className="flex gap-2">
+          <VintageInput
+            value={bug.gerrit_links?.join(", ") || ""}
+            onChange={(e) =>
+              onChange(
+                "gerrit_links",
+                e.target.value
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter((s) => s),
+              )
+            }
+            className="flex-1"
+          />
+          <Button variant="outline" size="sm" className="bg-gray-100 border-2 border-gray-400">
+            Edit Gerrit Links
+          </Button>
+        </div>
+      </FormField>
+
+      {/* Regression Commit Links */}
+      <FormField label="Regression Commit Link(s)">
+        <VintageInput
+          value={bug.regression_commit_links?.join(", ") || ""}
+          onChange={(e) =>
+            onChange(
+              "regression_commit_links",
+              e.target.value
+                .split(",")
+                .map((s) => s.trim())
+                .filter((s) => s),
+            )
+          }
+          className="w-full"
+        />
+      </FormField>
+
+      {/* Reason why not provided */}
+      <FormField label="Reason why not provided">
+        <VintageTextarea
+          value={bug.reason_why_not_provided || ""}
+          onChange={(e) => onChange("reason_why_not_provided", e.target.value)}
+          rows={2}
+        />
+      </FormField>
+
+      {/* Jira Links */}
+      <FormField label="Jira Link(s)">
+        <div className="flex gap-2">
+          <VintageInput
+            value={bug.jira_links?.join(", ") || ""}
+            onChange={(e) =>
+              onChange(
+                "jira_links",
+                e.target.value
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter((s) => s),
+              )
+            }
+            className="flex-1"
+          />
+          <Button variant="outline" size="sm" className="bg-gray-100 border-2 border-gray-400">
+            Edit Jira Links
+          </Button>
+        </div>
+      </FormField>
+
+      {/* Root Cause Analysis */}
+      <FormField label="Root Cause Analysis">
+        <VintageSelect
+          value={bug.root_cause_analysis || "N/A"}
+          onValueChange={(value) => onChange("root_cause_analysis", value)}
+          className="w-48"
+        >
+          <SelectItem value="">---</SelectItem>
+          <SelectItem value="Memory Management">Memory Management</SelectItem>
+          <SelectItem value="Logic Error">Logic Error</SelectItem>
+          <SelectItem value="Configuration Issue">Configuration Issue</SelectItem>
+          <SelectItem value="External Dependency">External Dependency</SelectItem>
+        </VintageSelect>
+      </FormField>
     </div>
   )
 }
