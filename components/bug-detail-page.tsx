@@ -7,6 +7,7 @@ import { BugHeader } from "@/components/bug-header"
 import { BugTabs } from "@/components/bug-tabs"
 import { BugFormLeft } from "@/components/bug-form-left"
 import { BugFormRight } from "@/components/bug-form-right"
+import { BugComments } from "@/components/bug-comments"
 import { DeliveryMatrix } from "@/components/delivery-matrix"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -40,6 +41,10 @@ export function BugDetailPage({ bugId = 338662 }: BugDetailPageProps) {
     } catch (error) {
       // Error is handled by the hook
     }
+  }
+
+  const handleStatusChange = (status: string) => {
+    handleFieldChange("status", status)
   }
 
   if (loading) {
@@ -122,6 +127,9 @@ export function BugDetailPage({ bugId = 338662 }: BugDetailPageProps) {
       <BugTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab}>
         {renderTabContent()}
       </BugTabs>
+
+      {/* Comments Section */}
+      <BugComments bug={displayBug} onStatusChange={handleStatusChange} />
     </div>
   )
 }
