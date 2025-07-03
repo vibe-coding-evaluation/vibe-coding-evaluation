@@ -9,6 +9,7 @@ import { BugFormLeft } from "@/components/bug-form-left"
 import { BugFormRight } from "@/components/bug-form-right"
 import { BugComments } from "@/components/bug-comments"
 import { DeliveryMatrix } from "@/components/delivery-matrix"
+import { DeliveryTable } from "@/components/delivery-table"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -127,6 +128,11 @@ export function BugDetailPage({ bugId = 338662 }: BugDetailPageProps) {
       <BugTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab}>
         {renderTabContent()}
       </BugTabs>
+
+      {/* Delivery Table Section */}
+      <div className="p-6">
+        <DeliveryTable />
+      </div>
 
       {/* Comments Section - 2 Column Layout */}
       <div className="bg-white border-t-2 border-gray-300">
