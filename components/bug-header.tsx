@@ -59,13 +59,13 @@ export function BugHeader({ bug, onSave, saving, error }: BugHeaderProps) {
             <Button
               onClick={onSave}
               disabled={saving}
-              className="bg-gray-100 border-2 border-gray-400 text-black hover:bg-gray-200 shadow-sm"
+              className="bg-gray-100 border-2 border-gray-400 text-black hover:bg-gray-200 shadow-sm rounded-none text-sm px-4 py-2"
               variant="outline"
             >
               {saving ? "Saving..." : "Save Changes"}
             </Button>
             <div className="flex items-center space-x-2">
-              <Checkbox id="minor-update" />
+              <Checkbox id="minor-update" className="border-gray-400" />
               <label htmlFor="minor-update" className="text-xs text-gray-600 cursor-pointer">
                 This is a minor update (do not send email)
               </label>

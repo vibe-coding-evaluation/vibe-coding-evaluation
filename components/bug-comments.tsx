@@ -107,6 +107,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
               id="private-comment"
               checked={newComment.is_private}
               onCheckedChange={(checked) => setNewComment((prev) => ({ ...prev, is_private: !!checked }))}
+              className="border-gray-400"
             />
             <label htmlFor="private-comment" className="text-sm cursor-pointer">
               Make comment private (visible only to members of the editbugs group)
@@ -148,7 +149,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
             <Button
               onClick={handleSaveChanges}
               disabled={saving || !newComment.text.trim()}
-              className="bg-gray-100 border-2 border-gray-400 text-black hover:bg-gray-200 shadow-sm"
+              className="bg-gray-100 border-2 border-gray-400 text-black hover:bg-gray-200 shadow-sm rounded-none text-sm px-4 py-2"
               variant="outline"
             >
               {saving ? "Saving..." : "Save Changes"}
@@ -161,6 +162,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
                 id="minor-update-comment"
                 checked={newComment.minor_update}
                 onCheckedChange={(checked) => setNewComment((prev) => ({ ...prev, minor_update: !!checked }))}
+                className="border-gray-400"
               />
             </div>
           </div>
@@ -168,7 +170,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
       </div>
 
       {/* Middle Section: Display Options */}
-      <div className="bg-gray-100 border border-gray-300 p-3">
+      <div className="bg-gray-100 border-2 border-gray-300 p-3">
         <div className="flex items-center gap-6">
           <span className="font-bold text-sm">For All Comments:</span>
 
@@ -177,6 +179,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
               id="expand-width"
               checked={displayOptions.expandWidth}
               onCheckedChange={(checked) => setDisplayOptions((prev) => ({ ...prev, expandWidth: !!checked }))}
+              className="border-gray-400"
             />
             <label htmlFor="expand-width" className="text-sm cursor-pointer">
               Expand Width
@@ -188,6 +191,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
               id="decorate"
               checked={displayOptions.decorate}
               onCheckedChange={(checked) => setDisplayOptions((prev) => ({ ...prev, decorate: !!checked }))}
+              className="border-gray-400"
             />
             <label htmlFor="decorate" className="text-sm cursor-pointer">
               Decorate (Crash Dump)
@@ -199,6 +203,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
               id="collapse"
               checked={displayOptions.collapse}
               onCheckedChange={(checked) => setDisplayOptions((prev) => ({ ...prev, collapse: !!checked }))}
+              className="border-gray-400"
             />
             <label htmlFor="collapse" className="text-sm cursor-pointer">
               Collapse
@@ -210,7 +215,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
       {/* Bottom Section: Comment History List */}
       <div className="space-y-2">
         {comments.map((comment) => (
-          <div key={comment.id} className="bg-gray-50 border border-gray-300 p-3 space-y-2">
+          <div key={comment.id} className="bg-gray-50 border-2 border-gray-300 p-3 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <a href="#" className="text-blue-600 underline hover:text-blue-800 font-bold">
@@ -230,6 +235,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
                     id={`private-${comment.id}`}
                     checked={comment.is_private}
                     onCheckedChange={() => toggleCommentPrivacy(comment.id)}
+                    className="border-gray-400"
                   />
                   <label htmlFor={`private-${comment.id}`} className="text-sm cursor-pointer">
                     Private
@@ -246,7 +252,7 @@ export function BugComments({ bug, onStatusChange }: BugCommentsProps) {
 
             <div className="text-sm leading-relaxed">
               {displayOptions.decorate && comment.text.includes("crash") ? (
-                <pre className="font-mono text-xs bg-white p-2 border border-gray-200 overflow-x-auto">
+                <pre className="font-mono text-xs bg-white p-2 border-2 border-gray-200 overflow-x-auto rounded-none">
                   {comment.text}
                 </pre>
               ) : (

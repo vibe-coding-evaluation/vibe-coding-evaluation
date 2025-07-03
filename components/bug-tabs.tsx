@@ -15,7 +15,7 @@ interface BugTabsProps {
 export function BugTabs({ tabs, activeTab, onTabChange, children }: BugTabsProps) {
   return (
     <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
-      <TabsList className="bg-gray-200 border-b-2 border-gray-300 rounded-none h-auto p-0 shadow-sm">
+      <TabsList className="bg-gray-200 border-b-2 border-gray-300 rounded-none h-auto p-0 shadow-sm w-full justify-start">
         {tabs.map((tab) => (
           <TabsTrigger
             key={tab.id}
@@ -25,6 +25,7 @@ export function BugTabs({ tabs, activeTab, onTabChange, children }: BugTabsProps
               data-[state=active]:bg-blue-600 data-[state=active]:text-white
               data-[state=inactive]:bg-gray-300 data-[state=inactive]:text-black
               hover:bg-blue-500 hover:text-white transition-colors
+              text-sm font-normal
             `}
           >
             {tab.label}

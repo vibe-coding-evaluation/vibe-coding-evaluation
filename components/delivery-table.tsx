@@ -56,42 +56,44 @@ export function DeliveryTable() {
   }
 
   return (
-    <div className="bg-white border border-gray-300 shadow-sm">
+    <div className="bg-white border-2 border-gray-300 shadow-sm">
       {/* Header */}
-      <div className="bg-gray-500 text-white px-3 py-2 font-bold text-sm">Delivery Table</div>
+      <div className="bg-gray-500 text-white px-3 py-2 font-bold text-sm border-b-2 border-gray-300">
+        Delivery Table
+      </div>
 
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-400 text-white">
-              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-bold">
+            <tr className="bg-gray-400 text-white border-b-2 border-gray-300">
+              <th className="border-r border-gray-300 px-3 py-2 text-left text-sm font-bold">
                 Code Line <span className="font-normal">(Branch)</span>
               </th>
-              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-bold">Affected</th>
-              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-bold">Delivery</th>
-              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-bold">Release Blocker</th>
-              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-bold">Target Release</th>
-              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-bold">Fixed in Code Line</th>
-              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-bold">Shipped Release</th>
-              <th className="border border-gray-300 px-3 py-2 text-left text-sm font-bold">Delivery Remark</th>
+              <th className="border-r border-gray-300 px-3 py-2 text-left text-sm font-bold">Affected</th>
+              <th className="border-r border-gray-300 px-3 py-2 text-left text-sm font-bold">Delivery</th>
+              <th className="border-r border-gray-300 px-3 py-2 text-left text-sm font-bold">Release Blocker</th>
+              <th className="border-r border-gray-300 px-3 py-2 text-left text-sm font-bold">Target Release</th>
+              <th className="border-r border-gray-300 px-3 py-2 text-left text-sm font-bold">Fixed in Code Line</th>
+              <th className="border-r border-gray-300 px-3 py-2 text-left text-sm font-bold">Shipped Release</th>
+              <th className="px-3 py-2 text-left text-sm font-bold">Delivery Remark</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row, index) => (
               <tr key={row.id} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                 {/* Code Line */}
-                <td className="border border-gray-300 px-3 py-2 text-sm">
+                <td className="border-r border-gray-300 px-3 py-2 text-sm">
                   <div className="font-medium">{row.codeLine}</div>
                   <div className="text-gray-600 text-xs font-mono">({row.branch})</div>
                 </td>
 
                 {/* Affected */}
-                <td className="border border-gray-300 px-3 py-2">
+                <td className="border-r border-gray-300 px-3 py-2">
                   <select
                     value={row.affected}
                     onChange={(e) => updateRow(row.id, "affected", e.target.value)}
-                    className="w-20 text-xs border border-gray-400 bg-white font-mono px-1 py-1"
+                    className="w-20 text-xs border-2 border-gray-400 bg-white font-mono px-1 py-1 rounded-none"
                   >
                     {affectedOptions.map((option) => (
                       <option key={option} value={option}>
@@ -102,14 +104,14 @@ export function DeliveryTable() {
                 </td>
 
                 {/* Delivery */}
-                <td className="border border-gray-300 px-3 py-2">
+                <td className="border-r border-gray-300 px-3 py-2">
                   {row.deliveryDisabled ? (
                     <span className="text-xs text-gray-400 font-mono">not set</span>
                   ) : (
                     <select
                       value={row.delivery}
                       onChange={(e) => updateRow(row.id, "delivery", e.target.value)}
-                      className="w-20 text-xs border border-gray-400 bg-white font-mono px-1 py-1"
+                      className="w-20 text-xs border-2 border-gray-400 bg-white font-mono px-1 py-1 rounded-none"
                     >
                       {deliveryOptions.map((option) => (
                         <option key={option} value={option}>
@@ -121,14 +123,14 @@ export function DeliveryTable() {
                 </td>
 
                 {/* Release Blocker */}
-                <td className="border border-gray-300 px-3 py-2">
+                <td className="border-r border-gray-300 px-3 py-2">
                   {row.releaseBlockerDisabled ? (
                     <span className="text-xs text-gray-400 font-mono">not set</span>
                   ) : (
                     <select
                       value={row.releaseBlocker}
                       onChange={(e) => updateRow(row.id, "releaseBlocker", e.target.value)}
-                      className="w-20 text-xs border border-gray-400 bg-white font-mono px-1 py-1"
+                      className="w-20 text-xs border-2 border-gray-400 bg-white font-mono px-1 py-1 rounded-none"
                     >
                       {releaseBlockerOptions.map((option) => (
                         <option key={option} value={option}>
@@ -140,44 +142,44 @@ export function DeliveryTable() {
                 </td>
 
                 {/* Target Release */}
-                <td className="border border-gray-300 px-3 py-2">
+                <td className="border-r border-gray-300 px-3 py-2">
                   <input
                     type="text"
                     value={row.targetRelease}
                     onChange={(e) => updateRow(row.id, "targetRelease", e.target.value)}
-                    className="w-24 text-xs border border-gray-400 bg-white font-mono px-1 py-1"
+                    className="w-24 text-xs border-2 border-gray-400 bg-white font-mono px-1 py-1 rounded-none"
                   />
                 </td>
 
                 {/* Fixed in Code Line */}
-                <td className="border border-gray-300 px-3 py-2">
+                <td className="border-r border-gray-300 px-3 py-2">
                   <input
                     type="text"
                     value={row.fixedInCodeLine}
                     onChange={(e) => updateRow(row.id, "fixedInCodeLine", e.target.value)}
-                    className="w-24 text-xs border border-gray-400 bg-white font-mono px-1 py-1"
+                    className="w-24 text-xs border-2 border-gray-400 bg-white font-mono px-1 py-1 rounded-none"
                   />
                 </td>
 
                 {/* Shipped Release */}
-                <td className="border border-gray-300 px-3 py-2">
+                <td className="border-r border-gray-300 px-3 py-2">
                   <input
                     type="text"
                     value={row.shippedRelease}
                     onChange={(e) => updateRow(row.id, "shippedRelease", e.target.value)}
-                    className="w-24 text-xs border border-gray-400 bg-white font-mono px-1 py-1"
+                    className="w-24 text-xs border-2 border-gray-400 bg-white font-mono px-1 py-1 rounded-none"
                   />
                 </td>
 
                 {/* Delivery Remark */}
-                <td className="border border-gray-300 px-3 py-2">
+                <td className="px-3 py-2">
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-600">Add Remarks:</span>
                     <input
                       type="text"
                       value={row.deliveryRemark}
                       onChange={(e) => updateRow(row.id, "deliveryRemark", e.target.value)}
-                      className="flex-1 text-xs border border-gray-400 bg-white font-mono px-1 py-1"
+                      className="flex-1 text-xs border-2 border-gray-400 bg-white font-mono px-1 py-1 rounded-none"
                     />
                   </div>
                 </td>
@@ -188,7 +190,7 @@ export function DeliveryTable() {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-gray-300 p-3 bg-gray-50">
+      <div className="border-t-2 border-gray-300 p-3 bg-gray-50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4 text-xs">
             <span className="text-gray-600">out of maintenance</span>
@@ -210,7 +212,7 @@ export function DeliveryTable() {
               <a href="#" className="text-blue-600 underline hover:text-blue-800">
                 Delivery Schedule
               </a>
-              <button className="border border-gray-400 px-2 py-1 bg-white text-xs hover:bg-gray-100">
+              <button className="border-2 border-gray-400 px-2 py-1 bg-white text-xs hover:bg-gray-100 rounded-none">
                 Delivery Graph
               </button>
             </div>
@@ -218,7 +220,7 @@ export function DeliveryTable() {
               <Button
                 onClick={handleSave}
                 disabled={saving}
-                className="bg-gray-100 border border-gray-400 text-black hover:bg-gray-200 text-xs px-3 py-1 h-auto"
+                className="bg-gray-100 border-2 border-gray-400 text-black hover:bg-gray-200 text-xs px-3 py-1 h-auto rounded-none"
               >
                 {saving ? "Saving..." : "Save Changes"}
               </Button>
@@ -230,6 +232,7 @@ export function DeliveryTable() {
                   id="minor-update-delivery"
                   checked={minorUpdate}
                   onCheckedChange={(checked) => setMinorUpdate(!!checked)}
+                  className="border-gray-400"
                 />
               </div>
             </div>

@@ -18,9 +18,10 @@ export const VintageInput = forwardRef<HTMLInputElement, VintageInputProps>(
       <Input
         ref={ref}
         className={cn(
-          "bg-white border-gray-400 border-2 shadow-sm",
+          "bg-white border-gray-400 border-2 shadow-sm rounded-none",
           "focus:border-blue-500 focus:ring-1 focus:ring-blue-500",
-          monospace && "font-mono text-sm",
+          "text-sm px-2 py-1",
+          monospace && "font-mono",
           className,
         )}
         {...props}
@@ -40,9 +41,10 @@ export const VintageTextarea = forwardRef<HTMLTextAreaElement, VintageTextareaPr
       <Textarea
         ref={ref}
         className={cn(
-          "bg-white border-gray-400 border-2 shadow-sm",
+          "bg-white border-gray-400 border-2 shadow-sm rounded-none",
           "focus:border-blue-500 focus:ring-1 focus:ring-blue-500",
-          monospace && "font-mono text-sm",
+          "text-sm px-2 py-1 resize-vertical",
+          monospace && "font-mono",
           className,
         )}
         {...props}
@@ -65,14 +67,15 @@ export function VintageSelect({ value, onValueChange, placeholder, children, cla
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger
         className={cn(
-          "bg-white border-gray-400 border-2 shadow-sm",
+          "bg-white border-gray-400 border-2 shadow-sm rounded-none",
           "focus:border-blue-500 focus:ring-1 focus:ring-blue-500",
+          "text-sm px-2 py-1 h-auto min-h-[32px]",
           className,
         )}
       >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent>{children}</SelectContent>
+      <SelectContent className="border-gray-400 border-2 rounded-none shadow-lg">{children}</SelectContent>
     </Select>
   )
 }

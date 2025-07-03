@@ -34,9 +34,11 @@ export function TagInput({ value, onChange, placeholder, className }: TagInputPr
   }
 
   return (
-    <div className={cn("flex flex-wrap gap-1 p-2 border border-gray-400 bg-white rounded-sm min-h-[38px]", className)}>
+    <div
+      className={cn("flex flex-wrap gap-1 p-2 border-2 border-gray-400 bg-white rounded-none min-h-[38px]", className)}
+    >
       {value.map((tag) => (
-        <Badge key={tag} variant="secondary" className="text-xs">
+        <Badge key={tag} variant="secondary" className="text-xs rounded-none">
           {tag}
           <X className="w-3 h-3 ml-1 cursor-pointer hover:text-red-600" onClick={() => removeTag(tag)} />
         </Badge>
@@ -46,7 +48,7 @@ export function TagInput({ value, onChange, placeholder, className }: TagInputPr
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="border-0 p-0 h-auto flex-1 min-w-[120px] focus-visible:ring-0"
+        className="border-0 p-0 h-auto flex-1 min-w-[120px] focus-visible:ring-0 rounded-none"
       />
     </div>
   )
