@@ -167,11 +167,11 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
       <FormField label="Error Category">
         <div className="flex items-center gap-2">
           <VintageSelect
-            value={bug.error_category || "N/A"}
-            onValueChange={(value) => onChange("error_category", value)}
+            value={bug.error_category ?? "unset"}
+            onValueChange={(value) => onChange("error_category", value === "unset" ? undefined : value)}
             className="w-48"
           >
-            <SelectItem value="">---</SelectItem>
+            <SelectItem value="unset">---</SelectItem>
             <SelectItem value="crash">Crash</SelectItem>
             <SelectItem value="performance">Performance</SelectItem>
             <SelectItem value="data-corruption">Data Corruption</SelectItem>
@@ -231,11 +231,11 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
       <div className="space-y-2">
         <FormField label="Testcase exists">
           <VintageSelect
-            value={bug.testcase_exists ? "yes" : "no"}
-            onValueChange={(value) => onChange("testcase_exists", value === "yes")}
+            value={bug.testcase_exists === true ? "yes" : bug.testcase_exists === false ? "no" : "unset"}
+            onValueChange={(value) => onChange("testcase_exists", value === "unset" ? undefined : value === "yes")}
             className="w-32"
           >
-            <SelectItem value="">---</SelectItem>
+            <SelectItem value="unset">---</SelectItem>
             <SelectItem value="yes">Yes</SelectItem>
             <SelectItem value="no">No</SelectItem>
           </VintageSelect>
@@ -328,7 +328,7 @@ export function BugFormLeft({ bug, onChange }: BugFormLeftProps) {
           onValueChange={(value) => onChange("root_cause_analysis", value)}
           className="w-48"
         >
-          <SelectItem value="">---</SelectItem>
+          <SelectItem value="N/A">---</SelectItem>
           <SelectItem value="Memory Management">Memory Management</SelectItem>
           <SelectItem value="Logic Error">Logic Error</SelectItem>
           <SelectItem value="Configuration Issue">Configuration Issue</SelectItem>
